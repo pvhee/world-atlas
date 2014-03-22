@@ -103,3 +103,10 @@ topo/world-%.json: shp/ne_%_land.shp shp/ne_%_admin_0_countries.shp
 topo/%.json: shp/%.shp
 	mkdir -p $(dir $@)
 	$(TOPOJSON) --id-property=iso_a2 -o $@ -- $<
+
+.PHONY: europe.json
+europe.json: shp/ne_10m_admin_0_countries.shp
+	rm $@
+	ogr2ogr -f 'GeoJSON' -where "iso_a2 = ('NL', 'DE', 'FR', 'ES', 'UK', 'IE', 'GR', 'PL', 'DK', 'IC','BE', 'IT', 'PT', 'AT', 'CH', 'IL', 'SE', 'FI', 'TR', 'HU', 'GB')" $@ $<
+
+
